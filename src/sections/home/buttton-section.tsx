@@ -5,7 +5,7 @@ import useConnectWallet from "@/web3/use-connect-wallet";
 import { useAuthContext } from "@/contexts/auth-context/hooks/use-auth-context";
 
 export default function ButtonSection() {
-  const { connectWallet } = useConnectWallet();
+  const { connectWallet, isConnecting } = useConnectWallet();
   const { authenticated } = useAuthContext();
   const router = useRouter();
 
@@ -17,6 +17,7 @@ export default function ButtonSection() {
         size="lg"
         className="bg-black/80 text-white hover:bg-black/70"
         onClick={() => connectWallet()}
+        loading={isConnecting}
       >
         Connect Wallet
       </Button>
