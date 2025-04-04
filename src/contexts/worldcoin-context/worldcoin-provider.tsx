@@ -1,7 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import eruda from "eruda";
 import { MiniKit } from "@worldcoin/minikit-js";
-import { ReactNode, useEffect, useRef } from "react";
+import { browserName } from "react-device-detect";
+import { useEffect, useRef, useState } from "react";
+import LoadingSection from "@/components/loading-indecator/loading-section";
+
+import { WorldcoinContext } from "./worldcoin-context";
 
 declare global {
   interface Window {
@@ -21,9 +25,15 @@ declare global {
   }
 }
 
-export default function MiniKitProvider({ children }: { children: ReactNode }) {
+export default function WorldcoinProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const initAttempts = useRef(0);
   const maxAttempts = 3;
+
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     MiniKit.install(import.meta.env.VITE_WORLDCOIN_APP_ID);
@@ -189,6 +199,8 @@ export default function MiniKitProvider({ children }: { children: ReactNode }) {
         }
 
         return false;
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -216,5 +228,17 @@ export default function MiniKitProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  return <>{children}</>;
+  if (isLoading) {
+    return <LoadingSection loading />;
+  }
+
+  console.log("---- ", window.MiniKit);
+
+  console.log({ browserName });
+
+  return (
+    <WorldcoinContext.Provider value={{ enabled: browserName === "WebKit" }}>
+      {children}
+    </WorldcoinContext.Provider>
+  );
 }

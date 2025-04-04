@@ -3,7 +3,7 @@ import { ThirdwebProvider } from "thirdweb/react";
 
 import Router from "./routes/sections";
 import { ThemeProvider } from "./components/theme-provider";
-import WorldcoinProvider from "./components/worldcoin/worldcoin-provider";
+import WorldcoinProvider from "./contexts/worldcoin-context/worldcoin-provider";
 
 export default function App() {
   return (
