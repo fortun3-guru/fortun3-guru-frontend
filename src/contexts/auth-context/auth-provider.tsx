@@ -1,6 +1,8 @@
 import { toast } from "sonner";
+import { client } from "@/web3/client";
 import { fError } from "@/utils/format-error";
 import axios, { endpoints } from "@/libs/axios";
+import { useAutoConnect } from "thirdweb/react";
 import { useBoolean } from "@/hooks/use-boolean";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import LoadingSection from "@/components/loading-indecator/loading-section";
@@ -17,6 +19,9 @@ type Props = {
 export function AuthProvider({ children }: Props) {
   const [user, setUser] = useState<UserType | null>(null);
   const loading = useBoolean(true);
+  useAutoConnect({
+    client,
+  });
 
   const checkUserSession = useCallback(async () => {
     try {
@@ -45,17 +50,10 @@ export function AuthProvider({ children }: Props) {
   }, []);
 
   const signIn = useCallback(
-    async (email: string, password: string) => {
+    async (accessToken: string, user: UserType) => {
       try {
-        const { data } = await axios.post(endpoints.auth.login, {
-          email,
-          password,
-        });
-        const { accessToken, user } = data;
-        if (accessToken && user) {
-          setUser(user);
-          setSession(accessToken);
-        }
+        setUser(user);
+        setSession(accessToken);
       } catch (error) {
         const err = fError(error);
         toast.error(err);

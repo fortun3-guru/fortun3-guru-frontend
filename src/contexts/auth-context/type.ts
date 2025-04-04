@@ -3,7 +3,7 @@ export type AuthContextType = {
   loading: boolean;
   authenticated: boolean;
   unauthenticated: boolean;
-  signIn: (email: string, password: string) => Promise<void>;
+  signIn: (token: string, user: UserType) => Promise<void>;
   signOut: () => void;
 };
 
@@ -11,4 +11,5 @@ export type UserType = {
   id: string;
   firstName: string;
   lastName: string;
+  walletAddress: string;
 };

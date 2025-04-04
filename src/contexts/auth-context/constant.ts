@@ -1,1 +1,1 @@
-export const STORAGE_KEY = "law_x_jwt_access_token";
+export const STORAGE_KEY = "f3_jwt_access_token";

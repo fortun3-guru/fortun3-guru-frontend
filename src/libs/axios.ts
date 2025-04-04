@@ -14,7 +14,8 @@ export default axiosInstance;
 
 export const endpoints = {
   auth: {
-    login: "/v1/auth/admin-login",
-    me: "/v1/auth/me",
+    message: "/auth/message",
+    verify: "/auth/verify",
+    me: "/users/me/profile",
   },
 } as const;

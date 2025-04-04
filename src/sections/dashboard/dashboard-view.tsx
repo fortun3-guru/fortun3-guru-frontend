@@ -1,7 +1,8 @@
 import { useState } from "react";
-import logo from "@/assets/logo/logo.svg";
 import { Button } from "@/components/shadcn/button";
 import { Textarea } from "@/components/shadcn/textarea";
+import useConnectWallet from "@/web3/use-connect-wallet";
+import { useAuthContext } from "@/contexts/auth-context/hooks/use-auth-context";
 import {
   Select,
   SelectContent,
@@ -10,21 +11,18 @@ import {
   SelectValue,
 } from "@/components/shadcn/select";
 
+import Header from "./header";
+
 export default function DashboardView() {
+  const { connectWallet } = useConnectWallet();
+  const { authenticated } = useAuthContext();
   const [question, setQuestion] = useState("");
   const [language, setLanguage] = useState("");
   const [source, setSource] = useState("");
 
   return (
     <div className="container mx-auto h-screen w-screen relative flex flex-col-reverse pb-36">
-      <header className="flex h-20 w-full shrink-0 items-center absolute top-0 left-0 right-0">
-        <img src={logo} alt="logo" />
-        <div className="ml-auto flex gap-2">
-          <Button variant="outline" className="justify-self-end" size="lg">
-            Connect Wallet
-          </Button>
-        </div>
-      </header>
+      <Header />
       <div className="w-full max-w-3xl mx-auto p-6 space-y-6 bg-white/20 rounded-lg border-2 border-white/55">
         <h1 className="text-xl font-normal  text-white mb-4">
           Using F3 token to check your fortune. One F3 Token a time.
@@ -65,13 +63,25 @@ export default function DashboardView() {
           </div>
 
           <div className="text-center mt-4">
-            <Button
-              size="lg"
-              variant="default"
-              className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
-            >
-              That's it !!
-            </Button>
+            {!authenticated ? (
+              <Button
+                variant="default"
+                type="button"
+                size="lg"
+                className="bg-black/80 text-white hover:bg-black/70"
+                onClick={() => connectWallet()}
+              >
+                Connect Wallet
+              </Button>
+            ) : (
+              <Button
+                size="lg"
+                variant="default"
+                className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
+              >
+                That's it !!
+              </Button>
+            )}
           </div>
         </div>
       </div>
