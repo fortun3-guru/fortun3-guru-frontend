@@ -25,7 +25,7 @@ export default function TopupView() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-screen">
+    <div className="flex flex-col h-screen w-screen px-4">
       <div className="w-full max-w-3xl mx-auto p-6 space-y-6 bg-white/20 rounded-lg border-2 border-white/55 mt-36">
         <h1 className="text-xl font-normal text-white mb-4">
           Exchange USDC to F3 Token
