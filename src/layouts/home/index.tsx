@@ -30,7 +30,7 @@ export default function HomeLayout({
 
   return (
     <div className="container mx-auto h-screen w-screen relative">
-      <header className="flex h-20 w-full shrink-0 items-center absolute top-0 left-0 right-0">
+      <header className="flex h-20 w-full shrink-0 items-center absolute top-0 left-0 right-0 z-2">
         <img
           src={logo}
           alt="logo"
