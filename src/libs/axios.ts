@@ -18,4 +18,9 @@ export const endpoints = {
     verify: "/auth/verify",
     me: "/users/me/profile",
   },
+  worldcoin: {
+    nonce: "/worldcoin/nonce",
+    verify: "/worldcoin/complete-siwe",
+    confirmPayment: "/worldcoin/confirm-payment",
+  },
 } as const;

@@ -13,9 +13,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/shadcn/select";
+import { MiniKit } from "@worldcoin/minikit-js";
 
 import ButtonSection from "./buttton-section";
 import { Button } from "@/components/shadcn/button";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeView() {
   const [question, setQuestion] = useState("");
@@ -27,6 +29,8 @@ export default function HomeView() {
   const idleVideoRef = useRef<HTMLVideoElement | null>(null);
   const loadingVideoRef = useRef<HTMLVideoElement | null>(null);
   const speakingVideoRef = useRef<HTMLVideoElement | null>(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Create audio element
@@ -207,6 +211,15 @@ export default function HomeView() {
                   onClick={handleNextClick}
                 >
                   Next
+                </Button>
+
+                <Button
+                  size="lg"
+                  variant="default"
+                  className="bg-black/80 ml-2 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
+                  onClick={() => navigate("/playground")}
+                >
+                  GO TO PLAYGROUND
                 </Button>
               </div>
             </div>
