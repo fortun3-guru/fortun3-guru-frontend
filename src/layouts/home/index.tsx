@@ -5,7 +5,6 @@ import { fAddress } from "@/utils/format-address";
 import { Button } from "@/components/shadcn/button";
 import { useRouter } from "@/routes/hooks/use-router";
 import useConnectWallet from "@/web3/use-connect-wallet";
-import { useAuthContext } from "@/contexts/auth-context/hooks/use-auth-context";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,8 +22,9 @@ export default function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { connectWallet, disconnectWallet } = useConnectWallet();
-  const { authenticated, user } = useAuthContext();
+  const { connectWallet, disconnectWallet, activeAccount, isConnecting } =
+    useConnectWallet();
+
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
@@ -38,7 +38,7 @@ export default function HomeLayout({
           className="cursor-pointer"
         />
         <div className="ml-auto flex gap-2">
-          {authenticated ? (
+          {activeAccount ? (
             <>
               <Button
                 variant="outline"
@@ -47,7 +47,7 @@ export default function HomeLayout({
                 onClick={() => setOpen(true)}
                 size="lg"
               >
-                {fAddress(user?.walletAddress || "")}
+                {fAddress(activeAccount.address || "")}
               </Button>
               <AlertDialog open={open} onOpenChange={setOpen}>
                 <AlertDialogTrigger asChild></AlertDialogTrigger>
@@ -74,9 +74,10 @@ export default function HomeLayout({
             <Button
               variant="outline"
               type="button"
-              className="justify-self-end"
+              className="justify-self-end w-32"
               size="lg"
               onClick={() => connectWallet()}
+              loading={isConnecting}
             >
               Connect Wallet
             </Button>
