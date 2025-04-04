@@ -1,6 +1,6 @@
 export const paths = {
-  login: "/login",
-  dashboard: "/dashboard",
+  dashboard: "/",
+  topup: "/topup",
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard;

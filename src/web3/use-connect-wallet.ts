@@ -27,9 +27,6 @@ export default function useConnectWallet() {
   const error = useBoolean(false);
   const { signIn, signOut, user } = useAuthContext();
 
-  console.log({ activeWallet });
-  console.log({ activeAccount });
-
   const disconnectWallet = useCallback(() => {
     if (activeWallet) {
       disconnect(activeWallet);

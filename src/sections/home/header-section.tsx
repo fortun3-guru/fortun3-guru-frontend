@@ -16,10 +16,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/shadcn/alert-dialog";
 
-export default function Header() {
+export default function HeaderSection() {
   const { connectWallet, disconnectWallet } = useConnectWallet();
   const { authenticated, user } = useAuthContext();
   const [open, setOpen] = useState(false);
+
   return (
     <header className="flex h-20 w-full shrink-0 items-center absolute top-0 left-0 right-0">
       <img src={logo} alt="logo" />

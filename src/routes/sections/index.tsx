@@ -1,19 +1,27 @@
-import { Navigate, useRoutes } from "react-router-dom";
-
-import { loginRoutes } from "./login";
-import { otherRoutes } from "./other";
-import { PATH_AFTER_LOGIN } from "../paths";
-import { dashboardRoutes } from "./protected";
+import Home from "@/pages/home";
+import Topup from "@/pages/topup";
+import NotFound from "@/pages/404";
+import HomeLayout from "@/layouts/home";
+import { useRoutes } from "react-router-dom";
 
 export default function Router() {
   return useRoutes([
     {
       path: "/",
-      element: <Navigate to={PATH_AFTER_LOGIN} replace />,
+      element: (
+        <HomeLayout>
+          <Home />
+        </HomeLayout>
+      ),
     },
-    ...loginRoutes,
-    ...dashboardRoutes,
-    ...otherRoutes,
-    { path: "*", element: <Navigate to="/404" replace /> },
+    {
+      path: "/topup",
+      element: (
+        <HomeLayout>
+          <Topup />
+        </HomeLayout>
+      ),
+    },
+    { path: "*", element: <NotFound /> },
   ]);
 }
