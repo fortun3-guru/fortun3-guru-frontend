@@ -2,14 +2,13 @@ import { paths } from "@/routes/paths";
 import { Button } from "@/components/shadcn/button";
 import { useRouter } from "@/routes/hooks/use-router";
 import useConnectWallet from "@/web3/use-connect-wallet";
-import { useAuthContext } from "@/contexts/auth-context/hooks/use-auth-context";
 
 export default function ButtonSection() {
-  const { connectWallet, isConnecting } = useConnectWallet();
-  const { authenticated } = useAuthContext();
+  const { connectWallet, isConnecting, activeAccount } = useConnectWallet();
+
   const router = useRouter();
 
-  if (!authenticated) {
+  if (!activeAccount) {
     return (
       <Button
         variant="default"

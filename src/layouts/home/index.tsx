@@ -29,8 +29,8 @@ export default function HomeLayout({
   const router = useRouter();
 
   return (
-    <div className="container mx-auto h-screen w-screen relative">
-      <header className="flex h-20 w-full shrink-0 items-center absolute top-0 left-0 right-0">
+    <div className="container h-screen w-screen relative">
+      <header className="flex h-20 w-screen shrink-0 items-center absolute top-0 left-0 right-0 px-14">
         <img
           src={logo}
           alt="logo"
