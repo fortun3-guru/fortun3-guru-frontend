@@ -20,8 +20,8 @@ export default function Page() {
   const [tuteClaimed, setTuteClaimed] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minutes in seconds
   const [claimCount, setClaimCount] = useState(0);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [transactionId, setTransactionId] = useState<string>("");
+
+  const [transactionId] = useState<string>("");
   const [isMinting, setIsMinting] = useState(false);
 
   // Initialize Viem client

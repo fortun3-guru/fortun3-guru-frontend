@@ -1,4 +1,3 @@
-import { Nft } from "@/types/nft";
 import { Button } from "@/components/shadcn/button";
 import { Separator } from "@/components/shadcn/separator";
 import {
@@ -10,7 +9,12 @@ import {
 type Props = {
   open: boolean;
   onClose: () => void;
-  nft: Nft;
+  nft: {
+    name: string;
+    image: string;
+    description: string;
+    explorerUrl: string;
+  };
 };
 
 export default function NftDialog({ open, onClose, nft }: Props) {
@@ -35,7 +39,7 @@ export default function NftDialog({ open, onClose, nft }: Props) {
             <Button onClick={onClose} size="lg" variant="ghost">
               Close
             </Button>
-            <Button
+            {/* <Button
               onClick={() => {
                 window.open(nft.explorerUrl, "_blank");
               }}
@@ -43,7 +47,7 @@ export default function NftDialog({ open, onClose, nft }: Props) {
               variant="default"
             >
               See on Explorer
-            </Button>
+            </Button> */}
           </div>
         </DialogHeader>
       </DialogContent>

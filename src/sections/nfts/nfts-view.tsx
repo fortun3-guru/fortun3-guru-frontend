@@ -69,6 +69,7 @@ export default function NftsView() {
                     return null;
                   }
                   const metadata = JSON.parse(nft.rawMetadata);
+                  console.log(metadata);
 
                   return (
                     <NftCard

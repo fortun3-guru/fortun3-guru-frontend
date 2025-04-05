@@ -346,7 +346,7 @@ export default function HomeView() {
                     <SelectItem value="txhash">
                       Transaction Hash & Wallet Address
                     </SelectItem>
-                    {/* <SelectItem value="timestamp">Time Stamp</SelectItem> */}
+                    <SelectItem value="timestamp">Time Stamp</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

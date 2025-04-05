@@ -69,8 +69,7 @@ export default function MiniAppHomeView() {
   const verifySuccess = useBoolean(false);
   const tarotDialog = useBoolean(false);
 
-  const [mintingResponse, setMintingResponse] =
-    useState<MintNftResponse | null>(null);
+  const [mintingResponse] = useState<MintNftResponse | null>(null);
 
   // useLayoutEffect(() => {
   //   // Create audio element
@@ -237,31 +236,30 @@ export default function MiniAppHomeView() {
     isLoadingVideoPlayingRef.current = false;
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleMinting = async () => {
-    try {
-      minting.onTrue();
-      const payment = await sendPayment();
-      if (!payment?.transaction_id || !payment?.reference) {
-        throw new Error("Consult failed");
-      }
-      const { data } = await axios.post<MintNftResponse>(`/fortune/mint-nft`, {
-        consultId: tellResponseRef.current?.documentId,
-        receiptId: payment.reference,
-      });
+  // const handleMinting = async () => {
+  //   try {
+  //     minting.onTrue();
+  //     const payment = await sendPayment();
+  //     if (!payment?.transaction_id || !payment?.reference) {
+  //       throw new Error("Consult failed");
+  //     }
+  //     const { data } = await axios.post<MintNftResponse>(`/fortune/mint-nft`, {
+  //       consultId: tellResponseRef.current?.documentId,
+  //       receiptId: payment.reference,
+  //     });
 
-      if (!data.success) {
-        throw new Error("Minting failed");
-      }
-      setMintingResponse(data);
-      toast.success("Minting success");
-    } catch (error) {
-      console.log(error);
-      toast.error("Minting failed");
-    } finally {
-      minting.onFalse();
-    }
-  };
+  //     if (!data.success) {
+  //       throw new Error("Minting failed");
+  //     }
+  //     setMintingResponse(data);
+  //     toast.success("Minting success");
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error("Minting failed");
+  //   } finally {
+  //     minting.onFalse();
+  //   }
+  // };
 
   const onCancelMinting = () => {
     if (minting.value) {
@@ -404,6 +402,30 @@ export default function MiniAppHomeView() {
     }
   };
 
+  // const sendNotification = async () => {
+  //   try {
+  //     const walletAddress = window.MiniKit?.walletAddress;
+  //     if (!walletAddress) {
+  //       return;
+  //     }
+  //     const { data } = await _axios.post(
+  //       "https://developer.worldcoin.org/api/v2/minikit/send-notification",
+  //       {
+  //         app_id: import.meta.env.VITE_WORLDCOIN_APP_ID,
+  //         wallet_addresses: [walletAddress],
+  //         title: "title",
+  //         message: "message",
+  //         mini_app_path: `worldapp://mini-app?app_id=${
+  //           import.meta.env.VITE_WORLDCOIN_APP_ID
+  //         }`,
+  //       }
+  //     );
+  //     console.log(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
   return (
     <div className="flex flex-col-reverse h-screen w-screen relative">
       {/* Video Backgrounds */}
@@ -535,9 +557,9 @@ export default function MiniAppHomeView() {
                   type="button"
                   size="lg"
                   className="!bg-black/80 text-white hover:!bg-black/70"
-                  onClick={() => navigate("/playground")}
+                  onClick={() => sendNotification()}
                 >
-                  play
+                  test notification
                 </Button> */}
               </div>
             </div>
