@@ -1,5 +1,8 @@
 import HomeView from "@/sections/home/home-view";
+import MiniAppHomeView from "@/sections/home/miniapp-home-view";
+import { useWorldcoinContext } from "@/contexts/worldcoin-context/use-worldcoin-context";
 
 export default function Home() {
-  return <HomeView />;
+  const { enabled } = useWorldcoinContext();
+  return enabled ? <MiniAppHomeView /> : <HomeView />;
 }

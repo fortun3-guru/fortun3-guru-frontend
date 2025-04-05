@@ -1,30 +1,35 @@
 import { useCallback } from "react";
-import { useActiveAccount } from "thirdweb/react";
 import { approve } from "thirdweb/extensions/erc20";
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
 
+import useConnectWallet from "../use-connect-wallet";
 import { counterServiceContract, usdcContract } from "../contracts";
 
 export default function useExchangeF3() {
-  const account = useActiveAccount();
+  const { isNetworkMatched, activeWallet, activeAccount } = useConnectWallet();
 
   const execute = useCallback(
     async (amount: number) => {
       try {
-        if (!account) {
+        if (!activeAccount) {
           throw new Error("Account is required");
         }
 
+        const chain = activeWallet?.getChain();
+        if (!chain || !isNetworkMatched) {
+          throw new Error("Network not supported");
+        }
+
         const approveTransaction = approve({
-          contract: usdcContract,
-          spender: counterServiceContract.address,
+          contract: usdcContract(chain),
+          spender: counterServiceContract(chain).address,
           amount,
         });
 
         const { transactionHash: approveTxHash } =
           await sendAndConfirmTransaction({
             transaction: approveTransaction,
-            account,
+            account: activeAccount,
           });
         console.log({ approveTxHash });
         if (!approveTxHash) {
@@ -32,14 +37,14 @@ export default function useExchangeF3() {
         }
 
         const transaction = prepareContractCall({
-          contract: counterServiceContract,
+          contract: counterServiceContract(chain),
           method: "exchange",
           params: [BigInt(amount * 10 ** 18)],
         });
 
         const receipt = await sendAndConfirmTransaction({
           transaction,
-          account,
+          account: activeAccount,
         });
         console.log({ receipt });
 
@@ -53,7 +58,7 @@ export default function useExchangeF3() {
         return { success: false };
       }
     },
-    [account]
+    [activeAccount, activeWallet, isNetworkMatched]
   );
 
   return execute;

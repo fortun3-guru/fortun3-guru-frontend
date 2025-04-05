@@ -13,7 +13,13 @@ export default function ButtonSection({
   handleConsult: () => Promise<void>;
   consulting: boolean;
 }) {
-  const { connectWallet, isConnecting, activeAccount } = useConnectWallet();
+  const {
+    connectWallet,
+    isConnecting,
+    activeAccount,
+    isNetworkMatched,
+    switchDefaultNetwork,
+  } = useConnectWallet();
   const checking = useBoolean(true);
   const executeBalance = useWalletBalance();
   const [f3Balance, setF3Balance] = useState<number>(0);
@@ -36,26 +42,31 @@ export default function ButtonSection({
 
   if (!activeAccount) {
     return (
-      <>
-        <Button
-          variant="default"
-          type="button"
-          size="lg"
-          className="bg-black/80 text-white hover:bg-black/70"
-          onClick={() => connectWallet()}
-          loading={isConnecting}
-        >
-          Connect Wallet
-        </Button>
-        <Button
-          onClick={() => router.push("/playground")}
-          size="lg"
-          variant="default"
-          className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
-        >
-          Go to playground
-        </Button>
-      </>
+      <Button
+        variant="default"
+        type="button"
+        size="lg"
+        className="bg-black/80 text-white hover:bg-black/70"
+        onClick={() => connectWallet()}
+        loading={isConnecting}
+      >
+        Connect Wallet
+      </Button>
+    );
+  }
+
+  if (!isNetworkMatched) {
+    return (
+      <Button
+        variant="default"
+        type="button"
+        size="lg"
+        className="bg-black/80 text-white hover:bg-black/70"
+        loading={isConnecting}
+        onClick={() => switchDefaultNetwork()}
+      >
+        Switch Network
+      </Button>
     );
   }
 

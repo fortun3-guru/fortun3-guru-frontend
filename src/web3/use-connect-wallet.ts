@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { toast } from "sonner";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { createWallet } from "thirdweb/wallets";
 import {
   useDisconnect,
@@ -9,6 +10,7 @@ import {
   useConnectModal,
   useActiveAccount,
   useAutoConnect,
+  useSwitchActiveWalletChain,
 } from "thirdweb/react";
 
 import { client } from "./client";
@@ -21,6 +23,15 @@ export default function useConnectWallet() {
   const connecting = useBoolean(false);
   const { disconnect } = useDisconnect();
   const activeWallet = useActiveWallet();
+  const switchChain = useSwitchActiveWalletChain();
+
+  useEffect(() => {
+    if ((window as any)?.ethereum) {
+      (window as any).ethereum.on("chainChanged", () => {
+        window.location.reload();
+      });
+    }
+  }, []);
 
   const { isLoading } = useAutoConnect({
     client,
@@ -48,7 +59,7 @@ export default function useConnectWallet() {
               createWallet("io.metamask"),
               createWallet("com.okex.wallet"),
             ],
-            chain: getChain(),
+            chains: getChain(),
             showAllWallets: false,
             size: "compact",
           });
@@ -66,10 +77,24 @@ export default function useConnectWallet() {
     [activeAccount, activeWallet, connecting, connectModal]
   );
 
+  const isNetworkMatched = getChain().some(
+    (chain) => chain.id === activeWallet?.getChain()?.id
+  );
+
+  const switchDefaultNetwork = useCallback(() => {
+    if (!isNetworkMatched) {
+      switchChain(getChain()[0]);
+      window.location.reload();
+    }
+  }, [isNetworkMatched, switchChain]);
+
   return {
+    activeWallet,
     connectWallet,
     isConnecting: connecting.value || isLoading,
     activeAccount,
     disconnectWallet,
+    isNetworkMatched,
+    switchDefaultNetwork,
   };
 }

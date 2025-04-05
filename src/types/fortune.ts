@@ -26,3 +26,13 @@ export type TellResponse = {
   };
   success: boolean;
 };
+
+export type MintNftResponse = {
+  success: boolean;
+  txHash: string;
+  tokenId: number;
+  contractAddress: string;
+  explorerUrl: string;
+  metadataUri: string;
+  error: string;
+};

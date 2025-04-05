@@ -1,18 +1,26 @@
+import { Chain } from "thirdweb/chains";
 import { getWalletBalance } from "thirdweb/wallets";
 
 import { client } from "../client";
-import { getChain } from "../chain";
+import useConnectWallet from "../use-connect-wallet";
 import { f3Contract, usdcContract } from "../contracts";
 
 export default function useWalletBalance() {
+  const { activeWallet, isNetworkMatched } = useConnectWallet();
+
   const getBalanceOnChain = async (
     walletAddress: string,
-    tokenAddress?: string
+    tokenAddress: string,
+    chain: Chain
   ) => {
+    if (!chain) {
+      throw new Error("Wallet is required");
+    }
+
     const balance = await getWalletBalance({
       address: walletAddress,
       client: client,
-      chain: getChain(),
+      chain: chain,
       tokenAddress: tokenAddress,
     });
 
@@ -23,9 +31,16 @@ export default function useWalletBalance() {
     if (!walletAddress) {
       return null;
     }
-    const tokens = [usdcContract.address, f3Contract.address];
+
+    const chain = activeWallet?.getChain();
+
+    if (!chain || !isNetworkMatched) {
+      return null;
+    }
+
+    const tokens = [usdcContract(chain).address, f3Contract(chain).address];
     const balance = await Promise.all(
-      tokens.map((token) => getBalanceOnChain(walletAddress, token))
+      tokens.map((token) => getBalanceOnChain(walletAddress, token, chain))
     );
 
     return {

@@ -1,22 +1,11 @@
 import { defineChain } from "thirdweb";
+import { baseSepolia, celo } from "thirdweb/chains";
 
 export const getChain = () => {
-  // if (!CHAIN_ID) {
-  //   throw new Error("CHAIN_ID is not set");
-  // }
-
-  // switch (Number(CHAIN_ID)) {
-  //   case 11155111:
-  //     return sepolia;
-
-  //   default:
-  //     throw new Error(`Chain with ID ${CHAIN_ID} is not supported`);
-  // }
-
-  return sepolia;
+  return [sepolia, baseSepolia, celo];
 };
 
-export const sepolia = /*@__PURE__*/ defineChain({
+const sepolia = /*@__PURE__*/ defineChain({
   id: 11155111,
   name: "Sepolia",
   nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
@@ -34,3 +23,9 @@ export const sepolia = /*@__PURE__*/ defineChain({
     },
   },
 });
+
+export const chainMap = {
+  [sepolia.id]: "sepolia",
+  [baseSepolia.id]: "base_sepolia",
+  [celo.id]: "celo_mainnet",
+} as const;

@@ -1,31 +1,36 @@
 import { ethers } from "ethers";
 import { useCallback } from "react";
-import { useActiveAccount } from "thirdweb/react";
 import { approve } from "thirdweb/extensions/erc20";
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
 
+import useConnectWallet from "../use-connect-wallet";
 import { counterServiceAbi } from "../abis/counter-service.abi";
 import { f3Contract, counterServiceContract } from "../contracts";
 
 export default function useConsultPay() {
-  const account = useActiveAccount();
+  const { isNetworkMatched, activeWallet, activeAccount } = useConnectWallet();
 
   const execute = useCallback(async () => {
     try {
-      if (!account) {
+      if (!activeAccount) {
         throw new Error("Account is required");
       }
 
+      const chain = activeWallet?.getChain();
+      if (!chain || !isNetworkMatched) {
+        throw new Error("Network not supported");
+      }
+
       const approveTransaction = approve({
-        contract: f3Contract,
-        spender: counterServiceContract.address,
+        contract: f3Contract(chain),
+        spender: counterServiceContract(chain).address,
         amount: 1,
       });
 
       const { transactionHash: approveTxHash } =
         await sendAndConfirmTransaction({
           transaction: approveTransaction,
-          account,
+          account: activeAccount,
         });
 
       console.log({ approveTxHash });
@@ -35,7 +40,7 @@ export default function useConsultPay() {
       }
 
       const transaction = prepareContractCall({
-        contract: counterServiceContract,
+        contract: counterServiceContract(chain),
         method: "payForConsult",
       });
 
@@ -43,7 +48,7 @@ export default function useConsultPay() {
 
       const receipt = await sendAndConfirmTransaction({
         transaction,
-        account,
+        account: activeAccount,
       });
       console.log({ receipt });
       // Create interface for contract
@@ -61,7 +66,7 @@ export default function useConsultPay() {
       console.log(error);
       return null;
     }
-  }, [account]);
+  }, [activeAccount, activeWallet, isNetworkMatched]);
 
   return execute;
 }
