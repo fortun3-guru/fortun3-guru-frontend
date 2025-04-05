@@ -1,11 +1,10 @@
 import idleVideo from "@/assets/bg-video/idle.mp4";
+import { useState, useEffect, useRef } from "react";
 import bgSound from "@/assets/bg-video/bg-sound.mp3";
 import speakingVideo from "@/assets/bg-video/speak.mp4";
-import loadingVideo from "@/assets/bg-video/loading.mp4";
-
-/* eslint-disable */
-import { useState, useEffect, useRef } from "react";
 import { Textarea } from "@/components/shadcn/textarea";
+import loadingVideo from "@/assets/bg-video/loading.mp4";
+import { useHoloContext } from "@/contexts/holo-context/use-holo-context";
 import {
   Select,
   SelectContent,
@@ -13,25 +12,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/shadcn/select";
-import { MiniKit } from "@worldcoin/minikit-js";
 
 import ButtonSection from "./buttton-section";
-import { Button } from "@/components/shadcn/button";
-import { useNavigate } from "react-router-dom";
-import useWalletBalance from "@/web3/hooks/use-wallet-balance";
-import { useActiveAccount } from "thirdweb/react";
-
 export default function HomeView() {
   const [question, setQuestion] = useState("");
   const [language, setLanguage] = useState("");
   const [source, setSource] = useState("");
-  const [currentVideo, setCurrentVideo] = useState("idle");
-  const [showPanel, setShowPanel] = useState(true);
+  // const [currentVideo, setCurrentVideo] = useState("idle");
+  const { consultStatus } = useHoloContext();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const idleVideoRef = useRef<HTMLVideoElement | null>(null);
   const loadingVideoRef = useRef<HTMLVideoElement | null>(null);
   const speakingVideoRef = useRef<HTMLVideoElement | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     // Create audio element
@@ -54,67 +47,88 @@ export default function HomeView() {
   }, []);
 
   // Handle video end events
+  // useEffect(() => {
+  //   const handleLoadingVideoEnd = () => {
+  //     console.log("loading video ended");
+  //     if (speakingVideoRef.current) {
+  //       speakingVideoRef.current.currentTime = 0;
+  //       speakingVideoRef.current.play().catch((error) => {
+  //         console.error("Error playing speaking video:", error);
+  //       });
+  //     }
+  //   };
+
+  //   const handleSpeakingVideoEnd = () => {
+  //     console.log("speaking video ended, showing panel");
+  //     setShowPanel(true);
+  //     if (idleVideoRef.current) {
+  //       idleVideoRef.current.currentTime = 0;
+  //       idleVideoRef.current.play().catch((error) => {
+  //         console.error("Error playing idle video:", error);
+  //       });
+  //     }
+  //   };
+
+  //   if (loadingVideoRef.current) {
+  //     loadingVideoRef.current.addEventListener("ended", handleLoadingVideoEnd);
+  //   }
+
+  //   if (speakingVideoRef.current) {
+  //     speakingVideoRef.current.addEventListener(
+  //       "ended",
+  //       handleSpeakingVideoEnd
+  //     );
+  //   }
+
+  //   return () => {
+  //     if (loadingVideoRef.current) {
+  //       loadingVideoRef.current.removeEventListener(
+  //         "ended",
+  //         handleLoadingVideoEnd
+  //       );
+  //     }
+  //     if (speakingVideoRef.current) {
+  //       speakingVideoRef.current.removeEventListener(
+  //         "ended",
+  //         handleSpeakingVideoEnd
+  //       );
+  //     }
+  //   };
+  // }, []);
+
+  // const handleNextClick = () => {
+  //   setCurrentVideo("loading");
+  //   setShowPanel(false);
+
+  // };
+
   useEffect(() => {
-    const handleLoadingVideoEnd = () => {
-      console.log("loading video ended");
-      setCurrentVideo("speaking");
+    console.log({ consultStatus });
+    if (consultStatus === "loading") {
+      if (loadingVideoRef.current) {
+        loadingVideoRef.current.currentTime = 0;
+        loadingVideoRef.current.play().catch((error) => {
+          console.error("Error playing loading video:", error);
+        });
+      }
+    }
+    if (consultStatus === "speaking") {
       if (speakingVideoRef.current) {
         speakingVideoRef.current.currentTime = 0;
         speakingVideoRef.current.play().catch((error) => {
           console.error("Error playing speaking video:", error);
         });
       }
-    };
-
-    const handleSpeakingVideoEnd = () => {
-      console.log("speaking video ended, showing panel");
-      setCurrentVideo("idle");
-      setShowPanel(true);
+    }
+    if (consultStatus === "idle") {
       if (idleVideoRef.current) {
         idleVideoRef.current.currentTime = 0;
         idleVideoRef.current.play().catch((error) => {
           console.error("Error playing idle video:", error);
         });
       }
-    };
-
-    if (loadingVideoRef.current) {
-      loadingVideoRef.current.addEventListener("ended", handleLoadingVideoEnd);
     }
-
-    if (speakingVideoRef.current) {
-      speakingVideoRef.current.addEventListener(
-        "ended",
-        handleSpeakingVideoEnd
-      );
-    }
-
-    return () => {
-      if (loadingVideoRef.current) {
-        loadingVideoRef.current.removeEventListener(
-          "ended",
-          handleLoadingVideoEnd
-        );
-      }
-      if (speakingVideoRef.current) {
-        speakingVideoRef.current.removeEventListener(
-          "ended",
-          handleSpeakingVideoEnd
-        );
-      }
-    };
-  }, []);
-
-  const handleNextClick = () => {
-    setCurrentVideo("loading");
-    setShowPanel(false);
-    if (loadingVideoRef.current) {
-      loadingVideoRef.current.currentTime = 0;
-      loadingVideoRef.current.play().catch((error) => {
-        console.error("Error playing loading video:", error);
-      });
-    }
-  };
+  }, [consultStatus]);
 
   return (
     <div className="flex flex-col-reverse h-screen w-screen relative">
@@ -126,7 +140,7 @@ export default function HomeView() {
         muted
         playsInline
         className={`absolute top-0 left-0 w-full h-full object-cover z-0 ${
-          currentVideo === "idle" ? "block" : "hidden"
+          consultStatus === "idle" ? "block" : "hidden"
         }`}
       >
         <source src={idleVideo} type="video/mp4" />
@@ -139,7 +153,7 @@ export default function HomeView() {
         muted
         playsInline
         className={`absolute top-0 left-0 w-full h-full object-cover z-0 ${
-          currentVideo === "loading" ? "block" : "hidden"
+          consultStatus === "loading" ? "block" : "hidden"
         }`}
       >
         <source src={loadingVideo} type="video/mp4" />
@@ -152,7 +166,7 @@ export default function HomeView() {
         muted
         playsInline
         className={`absolute top-0 left-0 w-full h-full object-cover z-0 ${
-          currentVideo === "speaking" ? "block" : "hidden"
+          consultStatus === "speaking" ? "block" : "hidden"
         }`}
       >
         <source src={speakingVideo} type="video/mp4" />
@@ -160,7 +174,7 @@ export default function HomeView() {
       </video>
 
       {/* Content with higher z-index to appear above video */}
-      {showPanel && (
+      {consultStatus === "idle" && (
         <div id="panel" className="w-full max-w-3xl mx-auto px-4 pb-12">
           <div className=" p-6 space-y-6 bg-white/20 rounded-lg border-2 border-white/55 relative z-10">
             <h1 className="text-xl font-normal  text-white mb-4">
@@ -207,7 +221,7 @@ export default function HomeView() {
                 <ButtonSection />
               </div>
 
-              <div className="mt-6">
+              {/* <div className="mt-6">
                 <Button
                   size="lg"
                   variant="default"
@@ -225,7 +239,7 @@ export default function HomeView() {
                 >
                   GO TO PLAYGROUND
                 </Button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

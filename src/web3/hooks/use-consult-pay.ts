@@ -49,10 +49,10 @@ export default function useConsultPay() {
         throw new Error("Pay transaction failed");
       }
 
-      return { success: true };
+      return receipt;
     } catch (error) {
       console.log(error);
-      return { success: false };
+      return null;
     }
   }, [account]);
 

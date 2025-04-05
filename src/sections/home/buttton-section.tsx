@@ -6,17 +6,17 @@ import { Button } from "@/components/shadcn/button";
 import { useRouter } from "@/routes/hooks/use-router";
 import useConnectWallet from "@/web3/use-connect-wallet";
 import useMintingPay from "@/web3/hooks/use-minting-pay";
-import useConsultPay from "@/web3/hooks/use-consult-pay";
 import useWalletBalance from "@/web3/hooks/use-wallet-balance";
+import { useHoloContext } from "@/contexts/holo-context/use-holo-context";
 
 export default function ButtonSection() {
   const { connectWallet, isConnecting, activeAccount } = useConnectWallet();
-  const consultting = useBoolean(false);
+
   const minting = useBoolean(false);
   const executeBalance = useWalletBalance();
   const [f3Balance, setF3Balance] = useState<number>(0);
   const executeMinting = useMintingPay();
-  const executeConsult = useConsultPay();
+  const { handleConsult, consulting } = useHoloContext();
 
   const router = useRouter();
 
@@ -27,21 +27,6 @@ export default function ButtonSection() {
       setF3Balance(+(balance?.f3 || 0));
     })();
   }, [activeAccount, executeBalance]);
-
-  const handleConsult = async () => {
-    try {
-      consultting.onTrue();
-      const { success } = await executeConsult();
-      if (success) {
-        toast.success("Consult success");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Consult failed");
-    } finally {
-      consultting.onFalse();
-    }
-  };
 
   const handleMinting = async () => {
     try {
@@ -85,8 +70,8 @@ export default function ButtonSection() {
       </Button>
       {!!f3Balance && (
         <Button
-          onClick={handleConsult}
-          loading={consultting.value}
+          onClick={() => handleConsult()}
+          loading={consulting}
           size="lg"
           variant="default"
           className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
