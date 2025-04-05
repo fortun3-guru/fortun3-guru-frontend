@@ -36,7 +36,6 @@ export default function WorldcoinProvider({
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    MiniKit.install(import.meta.env.VITE_WORLDCOIN_APP_ID);
     if (import.meta.env.DEV) {
       eruda.init();
     }
@@ -65,7 +64,7 @@ export default function WorldcoinProvider({
 
         // Install MiniKit based on official documentation
         if (typeof MiniKit.install === "function") {
-          MiniKit.install();
+          MiniKit.install(import.meta.env.VITE_WORLDCOIN_APP_ID);
         } else {
           console.error("MiniKit.install is not a function");
           return false;

@@ -50,7 +50,7 @@ export default function PayButton() {
         tokens: [
           {
             symbol: Tokens.WLD,
-            token_amount: tokenToDecimals(0.5, Tokens.WLD).toString(),
+            token_amount: tokenToDecimals(0, Tokens.WLD).toString(),
           },
           {
             symbol: Tokens.USDCE,

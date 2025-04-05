@@ -56,7 +56,7 @@ export default function useConsultPay() {
         throw new Error("Pay transaction failed");
       }
 
-      return { receiptId: receiptId.toNumber() };
+      return { ...receipt, receiptId: receiptId.toNumber() };
     } catch (error) {
       console.log(error);
       return null;

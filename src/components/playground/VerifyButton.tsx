@@ -35,9 +35,9 @@ export function VerifyButton({ onVerificationSuccess }: VerifyButtonProps) {
       setVerificationError(null);
 
       const verifyPayload: VerifyCommandInput = {
-        action: process.env.NEXT_PUBLIC_WLD_ACTION_ID || "web3-template",
+        action: "web3-template",
         signal: "",
-        verification_level: VerificationLevel.Orb,
+        verification_level: VerificationLevel.Device,
       };
 
       // Use async approach with commandsAsync
