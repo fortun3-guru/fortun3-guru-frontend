@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import eruda from "eruda";
 import { MiniKit } from "@worldcoin/minikit-js";
-import { browserName } from "react-device-detect";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import LoadingSection from "@/components/loading-indecator/loading-section";
 
@@ -32,6 +32,10 @@ export default function WorldcoinProvider({
 }) {
   const initAttempts = useRef(0);
   const maxAttempts = 3;
+
+  const [searchParams] = useSearchParams();
+
+  console.log({ platform: searchParams.get("platform") });
 
   const [isLoading, setIsLoading] = useState(true);
 
@@ -204,7 +208,7 @@ export default function WorldcoinProvider({
     };
 
     // Start initialization
-    if (browserName === "WebKit") {
+    if (searchParams.get("platform") === "world-mini-app") {
       initializeMiniKit();
     } else {
       setIsLoading(false);
@@ -236,7 +240,9 @@ export default function WorldcoinProvider({
   }
 
   return (
-    <WorldcoinContext.Provider value={{ enabled: browserName === "WebKit" }}>
+    <WorldcoinContext.Provider
+      value={{ enabled: searchParams.get("platform") === "world-mini-app" }}
+    >
       {children}
     </WorldcoinContext.Provider>
   );
