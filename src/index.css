@@ -36,6 +36,16 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --m: 4rem;
+
+  --red: #ff6565;
+  --pink: #ff64f9;
+  --purple: #6b5fff;
+  --blue: #4d8aff;
+  --green: #5bff89;
+  --yellow: #ffee55;
+  --orange: #ff6d1b;
 }
 
 .dark {
@@ -116,5 +126,61 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/*button animation*/
+.button-effect {
+  position: relative;
+  border-width: 2px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+
+  background: linear-gradient(#121213, #121213),
+    linear-gradient(135deg, #ffd600, #ffc837, #ff8008, #ffc837, #ffd600);
+  background-origin: border-box;
+  background-clip: padding-box, border-box, border-box;
+  background-size: 200%;
+  animation: animate 1s infinite linear;
+}
+
+.button-effect::before {
+  content: "";
+  background: linear-gradient(
+    135deg,
+    #ffd600,
+    #ffc837,
+    #ff8008,
+    #ffc837,
+    #ffd600
+  );
+  height: 30%;
+  width: 60%;
+  position: absolute;
+  bottom: -20%;
+  z-index: -5;
+  background-size: 200%;
+  animation: animate 1s infinite linear;
+  filter: blur(calc(0.8 * var(--m)));
+}
+
+.button-effect:hover,
+.button-effect:hover::before {
+  animation: animate 1.5s infinite linear;
+}
+
+@keyframes animate {
+  0% {
+    background-position: 0;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  :root {
+    --m: 2rem;
   }
 }
