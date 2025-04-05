@@ -120,7 +120,7 @@ export default function CommonLayout({
                 variant="outline"
                 type="button"
                 className="justify-self-end"
-                onClick={() => setOpen(true)}
+                onClick={() => router.push(paths.nfts)}
                 size="lg"
               >
                 NFT List
