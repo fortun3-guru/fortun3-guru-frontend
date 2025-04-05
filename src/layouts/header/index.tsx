@@ -3,7 +3,11 @@ import { useWorldcoinContext } from "@/contexts/worldcoin-context/use-worldcoin-
 import CommonHeader from "./common-header";
 import MiniAppHeader from "./mini-app-header";
 
-export default function Header() {
+export default function Header({ hideNetwork }: { hideNetwork?: boolean }) {
   const { enabled } = useWorldcoinContext();
-  return enabled ? <MiniAppHeader /> : <CommonHeader />;
+  return enabled ? (
+    <MiniAppHeader />
+  ) : (
+    <CommonHeader hideNetwork={hideNetwork} />
+  );
 }

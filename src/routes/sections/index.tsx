@@ -29,7 +29,7 @@ export default function Router() {
       path: "/nfts",
       element: (
         <AuthGuard>
-          <HomeLayout>
+          <HomeLayout hideNetwork>
             <Nfts />
           </HomeLayout>
         </AuthGuard>

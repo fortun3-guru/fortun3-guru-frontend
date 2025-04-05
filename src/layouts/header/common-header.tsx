@@ -27,7 +27,11 @@ import {
   AlertDialogTrigger,
 } from "@/components/shadcn/alert-dialog";
 
-export default function CommonHeader() {
+type Props = {
+  hideNetwork?: boolean;
+};
+
+export default function CommonHeader({ hideNetwork }: Props) {
   const {
     connectWallet,
     disconnectWallet,
@@ -62,7 +66,7 @@ export default function CommonHeader() {
         className="cursor-pointer"
       />
       <div className="ml-auto flex gap-2">
-        {activeWallet && (
+        {!hideNetwork && activeWallet && (
           <Select
             value={isNetworkMatched ? chainId?.toString() : undefined}
             onValueChange={onSwitchChain}

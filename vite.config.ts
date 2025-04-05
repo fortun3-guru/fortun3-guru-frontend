@@ -11,7 +11,7 @@ export default defineConfig({
   server: {
     host: "localhost",
     port: 5173,
-    allowedHosts: ["klass.fortun3.guru"],
+    allowedHosts: ["klass.fortun3.guru", "app.fortun3.guru"],
   },
   resolve: {
     alias: {

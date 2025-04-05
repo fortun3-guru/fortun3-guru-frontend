@@ -28,4 +28,5 @@ export const chainMap = {
   [sepolia.id]: "sepolia",
   [baseSepolia.id]: "base_sepolia",
   [celo.id]: "celo_mainnet",
+  [480]: "worldcoin",
 } as const;
