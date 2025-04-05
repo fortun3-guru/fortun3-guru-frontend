@@ -20,6 +20,7 @@ export default function Page() {
   const [tuteClaimed, setTuteClaimed] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(300); // 5 minutes in seconds
   const [claimCount, setClaimCount] = useState(0);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [transactionId, setTransactionId] = useState<string>("");
   const [isMinting, setIsMinting] = useState(false);
 
@@ -69,11 +70,11 @@ export default function Page() {
   };
 
   // Handle claim success
-  const handleClaimSuccess = (txId: string) => {
+  /*const handleClaimSuccess = (txId: string) => {
     console.log("Claim initiated with transaction ID:", txId);
     setTransactionId(txId);
     setIsMinting(true);
-  };
+  };*/
 
   // Timer effect for claim cooldown
   useEffect(() => {

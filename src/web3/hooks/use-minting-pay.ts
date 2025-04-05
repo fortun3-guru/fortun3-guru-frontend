@@ -1,8 +1,10 @@
+import { ethers } from "ethers";
 import { useCallback } from "react";
 import { useActiveAccount } from "thirdweb/react";
 import { approve } from "thirdweb/extensions/erc20";
 import { prepareContractCall, sendAndConfirmTransaction } from "thirdweb";
 
+import { counterServiceAbi } from "../abis/counter-service.abi";
 import { f3Contract, counterServiceContract } from "../contracts";
 
 export default function useMintingPay() {
@@ -41,11 +43,15 @@ export default function useMintingPay() {
       });
       console.log({ receipt });
 
+      const contractInterface = new ethers.utils.Interface(counterServiceAbi);
+      const parsed = contractInterface.parseLog(receipt.logs[2]);
+      const receiptId = parsed.args.receiptId;
+      console.log({ receiptId: receiptId.toNumber() });
       if (receipt.status !== "success") {
         throw new Error("Pay transaction failed");
       }
 
-      return { success: true };
+      return { receiptId: receiptId.toNumber() };
     } catch (error) {
       console.log(error);
       return { success: false };
