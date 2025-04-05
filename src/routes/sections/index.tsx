@@ -5,13 +5,14 @@ import NotFound from "@/pages/404";
 import HomeLayout from "@/layouts/home";
 import Playground from "@/pages/playground";
 import { useRoutes } from "react-router-dom";
+import AuthGuard from "@/layouts/guard/auth-guard";
 
 export default function Router() {
   return useRoutes([
     {
       path: "/",
       element: (
-        <HomeLayout>
+        <HomeLayout fit>
           <Home />
         </HomeLayout>
       ),
@@ -19,7 +20,7 @@ export default function Router() {
     {
       path: "/topup",
       element: (
-        <HomeLayout>
+        <HomeLayout fit>
           <Topup />
         </HomeLayout>
       ),
@@ -27,9 +28,11 @@ export default function Router() {
     {
       path: "/nfts",
       element: (
-        <HomeLayout>
-          <Nfts />
-        </HomeLayout>
+        <AuthGuard>
+          <HomeLayout>
+            <Nfts />
+          </HomeLayout>
+        </AuthGuard>
       ),
     },
     {

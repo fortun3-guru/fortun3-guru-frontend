@@ -1,14 +1,22 @@
-import React from "react";
-import { useWorldcoinContext } from "@/contexts/worldcoin-context/use-worldcoin-context";
+import { cn } from "@/libs/utils";
 
-import CommonHeader from "./common-layout";
-import MiniAppHeader from "./mini-app-layout";
+import Header from "../header";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
-  const { enabled } = useWorldcoinContext();
-  return enabled ? (
-    <MiniAppHeader>{children}</MiniAppHeader>
-  ) : (
-    <CommonHeader>{children}</CommonHeader>
+export default function HomeLayout({
+  children,
+  fit = false,
+}: {
+  children: React.ReactNode;
+  fit?: boolean;
+}) {
+  return (
+    <div
+      className={cn("container  w-screen relative", {
+        "overflow-hidden h-screen": fit,
+      })}
+    >
+      <Header />
+      {children}
+    </div>
   );
 }

@@ -25,7 +25,8 @@ export default function NftsView() {
       }
     };
     fetchNfts();
-  }, [loading]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="w-screen py-12 md:py-24 lg:py-32 pt-20">
