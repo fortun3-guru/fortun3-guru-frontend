@@ -78,7 +78,7 @@ export default function ButtonSection({
           loading={consulting || checking.value}
           size="lg"
           variant="outline"
-          className="!bg-black/80 text-white hover:!bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
+          className="button-effect !bg-black/80 text-white hover:!bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
         >
           That's it !!
         </Button>
