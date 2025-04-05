@@ -18,6 +18,8 @@ import { MiniKit } from "@worldcoin/minikit-js";
 import ButtonSection from "./buttton-section";
 import { Button } from "@/components/shadcn/button";
 import { useNavigate } from "react-router-dom";
+import useWalletBalance from "@/web3/hooks/use-wallet-balance";
+import { useActiveAccount } from "thirdweb/react";
 
 export default function HomeView() {
   const [question, setQuestion] = useState("");
@@ -29,7 +31,6 @@ export default function HomeView() {
   const idleVideoRef = useRef<HTMLVideoElement | null>(null);
   const loadingVideoRef = useRef<HTMLVideoElement | null>(null);
   const speakingVideoRef = useRef<HTMLVideoElement | null>(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -204,6 +205,9 @@ export default function HomeView() {
 
               <div className="text-center mt-4">
                 <ButtonSection />
+              </div>
+
+              <div className="mt-6">
                 <Button
                   size="lg"
                   variant="default"

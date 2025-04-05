@@ -1,10 +1,16 @@
 import numeral from "numeral";
+import { toast } from "sonner";
 import { useState } from "react";
+import { useBoolean } from "@/hooks/use-boolean";
 import { Input } from "@/components/shadcn/input";
+import { Button } from "@/components/shadcn/button";
+import useExchangeF3 from "@/web3/hooks/use-exchange-f3";
 
 export default function TopupView() {
   const [usdc, setUsdc] = useState("");
   const [f3Token, setF3Token] = useState("");
+  const executeExchange = useExchangeF3();
+  const loading = useBoolean(false);
 
   const calculateF3Token = (e: React.ChangeEvent<HTMLInputElement>) => {
     const __usdc = e.target.value;
@@ -20,8 +26,25 @@ export default function TopupView() {
       return;
     }
     setUsdc(_usdc);
-    const f3Token = +_usdc * 100;
+    const f3Token = +_usdc * 10;
     setF3Token(`${f3Token}`);
+  };
+
+  const handleExchange = async () => {
+    try {
+      loading.onTrue();
+      const { success } = await executeExchange(+usdc);
+      if (success) {
+        toast.success("Exchange successfully");
+        setUsdc("");
+        setF3Token("");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to exchange");
+    } finally {
+      loading.onFalse();
+    }
   };
 
   return (
@@ -48,6 +71,16 @@ export default function TopupView() {
               value={`${numeral(f3Token).format("0,0")} F3 Token`}
               disabled
             />
+          </div>
+
+          <div className="flex justify-center">
+            <Button
+              loading={loading.value}
+              className="bg-black/80 ml-2 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
+              onClick={handleExchange}
+            >
+              Exchange
+            </Button>
           </div>
         </div>
       </div>

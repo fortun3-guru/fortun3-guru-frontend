@@ -1,12 +1,62 @@
+import { toast } from "sonner";
 import { paths } from "@/routes/paths";
+import { useEffect, useState } from "react";
+import { useBoolean } from "@/hooks/use-boolean";
 import { Button } from "@/components/shadcn/button";
 import { useRouter } from "@/routes/hooks/use-router";
 import useConnectWallet from "@/web3/use-connect-wallet";
+import useMintingPay from "@/web3/hooks/use-minting-pay";
+import useConsultPay from "@/web3/hooks/use-consult-pay";
+import useWalletBalance from "@/web3/hooks/use-wallet-balance";
 
 export default function ButtonSection() {
   const { connectWallet, isConnecting, activeAccount } = useConnectWallet();
+  const consultting = useBoolean(false);
+  const minting = useBoolean(false);
+  const executeBalance = useWalletBalance();
+  const [f3Balance, setF3Balance] = useState<number>(0);
+  const executeMinting = useMintingPay();
+  const executeConsult = useConsultPay();
 
   const router = useRouter();
+
+  useEffect(() => {
+    (async () => {
+      const balance = await executeBalance(activeAccount?.address);
+      console.log({ balance });
+      setF3Balance(+(balance?.f3 || 0));
+    })();
+  }, [activeAccount, executeBalance]);
+
+  const handleConsult = async () => {
+    try {
+      consultting.onTrue();
+      const { success } = await executeConsult();
+      if (success) {
+        toast.success("Consult success");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Consult failed");
+    } finally {
+      consultting.onFalse();
+    }
+  };
+
+  const handleMinting = async () => {
+    try {
+      minting.onTrue();
+      const { success } = await executeMinting();
+      if (success) {
+        toast.success("Minting success");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Minting failed");
+    } finally {
+      minting.onFalse();
+    }
+  };
 
   if (!activeAccount) {
     return (
@@ -33,12 +83,25 @@ export default function ButtonSection() {
       >
         Get F3 Token
       </Button>
+      {!!f3Balance && (
+        <Button
+          onClick={handleConsult}
+          loading={consultting.value}
+          size="lg"
+          variant="default"
+          className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
+        >
+          That's it !!
+        </Button>
+      )}
       <Button
+        onClick={handleMinting}
+        loading={minting.value}
         size="lg"
         variant="default"
         className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm"
       >
-        Approve F3 Token
+        Minting
       </Button>
     </div>
   );

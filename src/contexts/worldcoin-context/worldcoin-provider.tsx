@@ -205,7 +205,11 @@ export default function WorldcoinProvider({
     };
 
     // Start initialization
-    initializeMiniKit();
+    if (browserName === "WebKit") {
+      initializeMiniKit();
+    } else {
+      setIsLoading(false);
+    }
 
     // Cleanup function
     return () => {
@@ -231,10 +235,6 @@ export default function WorldcoinProvider({
   if (isLoading) {
     return <LoadingSection loading />;
   }
-
-  console.log("---- ", window.MiniKit);
-
-  console.log({ browserName });
 
   return (
     <WorldcoinContext.Provider value={{ enabled: browserName === "WebKit" }}>

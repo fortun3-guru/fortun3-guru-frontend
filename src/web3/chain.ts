@@ -1,4 +1,4 @@
-import { sepolia } from "thirdweb/chains";
+import { defineChain } from "thirdweb";
 
 export const getChain = () => {
   // if (!CHAIN_ID) {
@@ -15,3 +15,22 @@ export const getChain = () => {
 
   return sepolia;
 };
+
+export const sepolia = /*@__PURE__*/ defineChain({
+  id: 11155111,
+  name: "Sepolia",
+  nativeCurrency: { name: "Sepolia Ether", symbol: "ETH", decimals: 18 },
+  blockExplorers: [
+    {
+      name: "Etherscan",
+      url: "https://sepolia.etherscan.io",
+      apiUrl: "https://api-sepolia.etherscan.io/api",
+    },
+  ],
+  testnet: true,
+  rpcUrls: {
+    default: {
+      http: ["https://eth-sepolia.public.blastapi.io"],
+    },
+  },
+});
