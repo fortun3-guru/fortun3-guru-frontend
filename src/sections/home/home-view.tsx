@@ -330,9 +330,10 @@ export default function HomeView() {
 
       {consultStatus === "idle" && (
         <div id="panel" className="w-full max-w-3xl mx-auto px-4 pb-12">
-          <div className=" p-6 space-y-6 bg-white/20 rounded-lg border-2 border-white/55 relative z-10 min-h-[330px]">
-            <h1 className="text-xl font-normal  text-white mb-4">
-              Using F3 token to check your fortune. One F3 Token a time.
+          <div className=" p-6 space-y-6 bg-black/70 rounded-lg border-1 border-white/20 relative z-10 min-h-[330px]">
+            <h1 className="text-lg font-light   text-white mb-4">
+              Using F3 token to check consult your prophecy. One F3 Token a
+              time.
             </h1>
 
             <div className="space-y-4">
@@ -341,13 +342,13 @@ export default function HomeView() {
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="What do you want to know ?"
-                  className="min-h-[120px] resize-none !bg-white text-gray-800 text-sm rounded-lg"
+                  className="min-h-[120px] !bg-[oklab(1_0_0_/_0.045)] resize-none  border-b-[oklch(1_0_0_/_0.15)] text-white-800 text-sm rounded-lg"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <Select value={language} onValueChange={setLanguage}>
-                  <SelectTrigger className="!bg-white text-gray-800 text-sm w-full !h-10">
+                  <SelectTrigger className="!bg-[oklab(1_0_0_/_0.045)]  text-white text-sm !h-10 w-full border-b-[oklch(1_0_0_/_0.15)]">
                     <SelectValue placeholder="Select Language" />
                   </SelectTrigger>
                   <SelectContent>
@@ -358,7 +359,7 @@ export default function HomeView() {
                 </Select>
 
                 <Select value={source} onValueChange={setSource}>
-                  <SelectTrigger className="!bg-white text-gray-800 text-sm w-full !h-10">
+                  <SelectTrigger className="!bg-[oklab(1_0_0_/_0.045)]  text-white text-sm !h-10 w-full border-b-[oklch(1_0_0_/_0.15)]">
                     <SelectValue placeholder="Source of destiny" />
                   </SelectTrigger>
                   <SelectContent>

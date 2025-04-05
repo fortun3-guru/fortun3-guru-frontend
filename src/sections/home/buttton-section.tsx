@@ -43,10 +43,10 @@ export default function ButtonSection({
   if (!activeAccount) {
     return (
       <Button
-        variant="default"
+        variant="outline"
         type="button"
         size="lg"
-        className="bg-black/80 text-white hover:bg-black/70"
+        className="!bg-black/80 text-white hover:!bg-black/70"
         onClick={() => connectWallet()}
         loading={isConnecting}
       >
@@ -58,10 +58,10 @@ export default function ButtonSection({
   if (!isNetworkMatched) {
     return (
       <Button
-        variant="default"
+        variant="outline"
         type="button"
         size="lg"
-        className="bg-black/80 text-white hover:bg-black/70"
+        className="!bg-black/80 text-white hover:!bg-black/70"
         loading={isConnecting}
         onClick={() => switchDefaultNetwork()}
       >
@@ -77,8 +77,8 @@ export default function ButtonSection({
           onClick={onConsult}
           loading={consulting || checking.value}
           size="lg"
-          variant="default"
-          className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
+          variant="outline"
+          className="!bg-black/80 text-white hover:!bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
         >
           That's it !!
         </Button>
@@ -87,8 +87,8 @@ export default function ButtonSection({
           onClick={() => router.push(paths.topup)}
           loading={checking.value}
           size="lg"
-          variant="default"
-          className="bg-black/80 text-white hover:bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
+          variant="outline"
+          className="!bg-black/80 text-white hover:!bg-black/70 px-6 py-2 rounded-lg text-sm min-w-[140px]"
         >
           Get F3 Token
         </Button>
