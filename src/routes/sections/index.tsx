@@ -1,4 +1,5 @@
 import Home from "@/pages/home";
+import Nfts from "@/pages/nfts";
 import Topup from "@/pages/topup";
 import NotFound from "@/pages/404";
 import HomeLayout from "@/layouts/home";
@@ -20,6 +21,14 @@ export default function Router() {
       element: (
         <HomeLayout>
           <Topup />
+        </HomeLayout>
+      ),
+    },
+    {
+      path: "/nfts",
+      element: (
+        <HomeLayout>
+          <Nfts />
         </HomeLayout>
       ),
     },

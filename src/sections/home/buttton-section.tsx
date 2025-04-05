@@ -42,16 +42,25 @@ export default function ButtonSection({
 
   if (!activeAccount) {
     return (
-      <Button
-        variant="default"
-        type="button"
-        size="lg"
-        className="bg-black/80 text-white hover:bg-black/70"
-        onClick={() => connectWallet()}
-        loading={isConnecting}
-      >
-        Connect Wallet
-      </Button>
+      <>
+        <Button
+          variant="default"
+          type="button"
+          size="lg"
+          className="bg-black/80 text-white hover:bg-black/70"
+          onClick={() => connectWallet()}
+          loading={isConnecting}
+        >
+          Connect Wallet
+        </Button>
+        <Button
+          onClick={() => {
+            router.push("/playground");
+          }}
+        >
+          go to playground
+        </Button>
+      </>
     );
   }
 
