@@ -1,5 +1,5 @@
-import axios from "axios";
 import { toast } from "sonner";
+import axios from "@/libs/axios";
 import { sleep } from "@/utils/sleep";
 import { chainMap } from "@/web3/chain";
 import { useBoolean } from "@/hooks/use-boolean";
@@ -194,7 +194,7 @@ export default function HomeView() {
       }
 
       const { data: consultData } = await axios.post<TellResponse>(
-        "http://192.168.0.23:3000/fortune/tell",
+        "/fortune/tell",
         {
           txHash: receipt.transactionHash,
           walletAddress: activeAccount?.address,
@@ -208,7 +208,7 @@ export default function HomeView() {
       let _consultResponse: ConsultResponse["data"] | null = null;
       while (true) {
         const { data: card } = await axios.get<ConsultResponse>(
-          `http://192.168.0.23:3000/fortune/consult/${consultData.data.documentId}`
+          `/fortune/consult/${consultData.data.documentId}`
         );
 
         await sleep(2000);
@@ -242,13 +242,10 @@ export default function HomeView() {
       if (!receipt) {
         throw new Error("Minting failed");
       }
-      const { data } = await axios.post<MintNftResponse>(
-        `http://192.168.0.23:3000/fortune/mint-nft`,
-        {
-          consultId: tellResponse?.documentId,
-          receiptId: receipt.receiptId,
-        }
-      );
+      const { data } = await axios.post<MintNftResponse>(`/fortune/mint-nft`, {
+        consultId: tellResponse?.documentId,
+        receiptId: receipt.receiptId,
+      });
 
       if (!data.success) {
         throw new Error("Minting failed");

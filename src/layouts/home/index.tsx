@@ -11,7 +11,7 @@ export default function HomeLayout({
 }) {
   return (
     <div
-      className={cn("container  w-screen relative", {
+      className={cn("w-screen relative", {
         "overflow-hidden h-screen": fit,
       })}
     >

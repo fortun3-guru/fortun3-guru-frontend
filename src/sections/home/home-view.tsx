@@ -1,5 +1,5 @@
-import axios from "axios";
 import { toast } from "sonner";
+import axios from "@/libs/axios";
 import { sleep } from "@/utils/sleep";
 import { chainMap } from "@/web3/chain";
 import { useBoolean } from "@/hooks/use-boolean";
@@ -87,33 +87,6 @@ export default function HomeView() {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (consultStatus === "loading") {
-  //     if (loadingVideoRef.current) {
-  //       loadingVideoRef.current.currentTime = 0;
-  //       loadingVideoRef.current.play().catch((error) => {
-  //         console.error("Error playing loading video:", error);
-  //       });
-  //     }
-  //   }
-  //   if (consultStatus === "speaking") {
-  //     if (speakingVideoRef.current) {
-  //       speakingVideoRef.current.currentTime = 0;
-  //       speakingVideoRef.current.play().catch((error) => {
-  //         console.error("Error playing speaking video:", error);
-  //       });
-  //     }
-  //   }
-  //   if (consultStatus === "idle") {
-  //     if (idleVideoRef.current) {
-  //       idleVideoRef.current.currentTime = 0;
-  //       idleVideoRef.current.play().catch((error) => {
-  //         console.error("Error playing idle video:", error);
-  //       });
-  //     }
-  //   }
-  // }, [consultStatus]);
-
   useEffect(() => {
     if (consultStatus === "loading") {
       if (loadingVideoRef.current) {
@@ -194,7 +167,7 @@ export default function HomeView() {
       }
 
       const { data: consultData } = await axios.post<TellResponse>(
-        "http://192.168.0.23:3000/fortune/tell",
+        "/fortune/tell",
         {
           txHash: receipt.transactionHash,
           walletAddress: activeAccount?.address,
@@ -208,7 +181,7 @@ export default function HomeView() {
       let _consultResponse: ConsultResponse["data"] | null = null;
       while (true) {
         const { data: card } = await axios.get<ConsultResponse>(
-          `http://192.168.0.23:3000/fortune/consult/${consultData.data.documentId}`
+          `/fortune/consult/${consultData.data.documentId}`
         );
 
         await sleep(2000);
@@ -242,13 +215,10 @@ export default function HomeView() {
       if (!receipt) {
         throw new Error("Minting failed");
       }
-      const { data } = await axios.post<MintNftResponse>(
-        `http://192.168.0.23:3000/fortune/mint-nft`,
-        {
-          consultId: tellResponse?.documentId,
-          receiptId: receipt.receiptId,
-        }
-      );
+      const { data } = await axios.post<MintNftResponse>(`/fortune/mint-nft`, {
+        consultId: tellResponse?.documentId,
+        receiptId: receipt.receiptId,
+      });
 
       if (!data.success) {
         throw new Error("Minting failed");
@@ -270,6 +240,7 @@ export default function HomeView() {
     }
     tarotDialog.onFalse();
     setConsultResponse(null);
+    window.location.reload();
   };
 
   return (
@@ -322,7 +293,7 @@ export default function HomeView() {
         <div className="w-full max-w-3xl mx-auto px-4 pb-12">
           <div className=" p-6 space-y-6 bg-white/80 rounded-lg border-2 border-white/55 relative z-10 min-h-[330px]">
             <p className="text-black text-xl">
-              <TypeWriter text={tellResponse.short} delay={100} />
+              <TypeWriter text={tellResponse.short} delay={80} />
             </p>
           </div>
         </div>
@@ -399,6 +370,19 @@ export default function HomeView() {
                 </Button>
 
                 <Button
+                  onClick={() => {
+                    const link = document.createElement("a");
+                    link.href = consultResponse?.tarot || "";
+                    link.download = "tarot-card.png";
+                    link.click();
+                  }}
+                  size="lg"
+                  variant="ghost"
+                >
+                  Download
+                </Button>
+
+                <Button
                   onClick={handleMinting}
                   loading={minting.value}
                   size="lg"
@@ -413,6 +397,20 @@ export default function HomeView() {
                   <Button onClick={onCancelMinting} size="lg" variant="ghost">
                     Close
                   </Button>
+
+                  <Button
+                    onClick={() => {
+                      const link = document.createElement("a");
+                      link.href = consultResponse?.tarot || "";
+                      link.download = "tarot-card.png";
+                      link.click();
+                    }}
+                    size="lg"
+                    variant="ghost"
+                  >
+                    Download
+                  </Button>
+
                   <Button
                     onClick={() => {
                       window.open(mintingResponse?.explorerUrl, "_blank");
