@@ -116,6 +116,15 @@ export default function CommonLayout({
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+              <Button
+                variant="outline"
+                type="button"
+                className="justify-self-end"
+                onClick={() => setOpen(true)}
+                size="lg"
+              >
+                NFT List
+              </Button>
             </>
           ) : (
             <Button
