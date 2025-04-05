@@ -73,7 +73,7 @@ export default function CommonLayout({
               onValueChange={onSwitchChain}
               disabled={switching.value}
             >
-              <SelectTrigger className="!bg-white text-gray-800 text-sm !h-10 w-[180px]">
+              <SelectTrigger className="!bg-[oklab(1_0_0_/_0.045)] text-white text-sm !h-10 w-[180px] border-b-[oklch(1_0_0_/_0.15)]">
                 <SelectValue placeholder={"Unsupport Chain"} />
               </SelectTrigger>
               <SelectContent>
@@ -116,6 +116,15 @@ export default function CommonLayout({
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
+              <Button
+                variant="outline"
+                type="button"
+                className="justify-self-end"
+                onClick={() => setOpen(true)}
+                size="lg"
+              >
+                NFT List
+              </Button>
             </>
           ) : (
             <Button
